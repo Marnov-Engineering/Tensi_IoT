@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MamaCare — Pengaturan WiFi</title>
+<style>
+:root{
+  --orange:#F5A623;
+  --orange-dark:#E09010;
+  --orange-light:#FDE9C0;
+  --navy:#1C2D6C;
+  --navy-light:#2A3F8F;
+  --white:#FFFFFF;
+  --gray:#F7F8FC;
+  --text:#2A2A2A;
+  --muted:#8A8FA8
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:linear-gradient(150deg,var(--orange-light) 0%,var(--orange) 60%,var(--orange-dark) 100%);
+  min-height:100vh;display:flex;align-items:center;
+  justify-content:center;padding:20px
+}
+.card{
+  background:var(--white);border-radius:24px;
+  padding:36px 28px 28px;width:100%;max-width:400px;
+  box-shadow:0 16px 48px rgba(28,45,108,.25)
+}
+.hdr{text-align:center;margin-bottom:24px}
+.logo-wrap{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;margin-bottom:8px
+}
+.logo-img{
+  width:200px;height:auto;max-height:120px;object-fit:contain
+}
+.sub{color:var(--muted);font-size:.88rem;margin-top:2px;line-height:1.35}
+label{
+  display:block;font-size:.76rem;font-weight:700;
+  color:var(--navy);margin-bottom:5px;margin-top:20px;
+  text-transform:uppercase;letter-spacing:.6px
+}
+.iw{position:relative}
+input[type=text],input[type=password]{
+  width:100%;padding:13px 46px 13px 14px;
+  border:2px solid #E0E4EF;border-radius:12px;
+  font-size:.95rem;color:var(--text);
+  background:var(--gray);outline:none;
+  transition:border-color .2s,background .2s
+}
+input:focus{border-color:var(--orange);background:var(--white)}
+.eye{
+  position:absolute;right:13px;top:50%;
+  transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;
+  font-size:1.1rem;color:#B0B8D0;
+  padding:0;line-height:1;transition:color .15s
+}
+.eye:hover{color:var(--orange)}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:15px;margin-top:28px;
+  background:var(--navy);color:var(--white);
+  border:none;border-radius:14px;font-size:1rem;
+  font-weight:700;cursor:pointer;letter-spacing:.3px;
+  transition:background .2s,transform .15s;
+  box-shadow:0 4px 18px rgba(28,45,108,.35)
+}
+.btn:hover{background:var(--navy-light)}
+.btn:active{transform:scale(.98);opacity:.9}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.note{
+  margin-top:18px;font-size:.78rem;
+  color:var(--muted);text-align:center;line-height:1.6
+}
+.divider{height:1px;background:#E8EBF5;margin:22px 0 0}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="hdr">
+    <div class="logo-wrap">
+      <!-- PNG transparan — sama dengan web.h (ESP32). -->
+      <img class="logo-img" src="mamacare_logo.png" alt="" width="260" height="217" decoding="async"/>
+    </div>
+    <div class="sub">Tensimeter IoT &mdash; Pengaturan WiFi</div>
+  </div>
+
+  <!-- Di test ini form redirect ke saved.html untuk preview halaman konfirmasi -->
+  <form method="GET" action="saved.html" id="frm">
+    <label for="s">Nama Jaringan (SSID)</label>
+    <input type="text" id="s" name="ssid"
+           placeholder="Contoh: Rumah_WiFi"
+           required autocomplete="off"
+           autocapitalize="none" spellcheck="false">
+    <label for="p">Password WiFi</label>
+    <div class="iw">
+      <input type="password" id="p" name="pass"
+             placeholder="Password WiFi Anda"
+             autocomplete="new-password">
+      <button type="button" class="eye"
+              onclick="var e=document.getElementById('p');e.type=e.type==='password'?'text':'password'"
+              title="Tampilkan / sembunyikan">&#128065;</button>
+    </div>
+    <button type="submit" class="btn" id="sbtn">
+      <span>&#128279;</span>
+      <span>Simpan &amp; Hubungkan</span>
+    </button>
+  </form>
+
+  <div class="divider"></div>
+  <p class="note">
+    Perangkat akan mencoba terhubung ke jaringan WiFi yang Anda masukkan (±10 detik).<br>
+    Proses mungkin memerlukan beberapa saat.
+  </p>
+</div>
+<script>
+document.getElementById('frm').onsubmit = function() {
+  var b = document.getElementById('sbtn');
+  b.disabled = true;
+  b.innerHTML = '<span>&#9203;</span><span>Menyimpan...</span>';
+  var ssid = document.getElementById('s').value;
+  setTimeout(function() {
+    window.location.href = 'saved.html?ssid=' + encodeURIComponent(ssid);
+  }, 800);
+  return false;
+};
+</script>
+</body>
+</html>
